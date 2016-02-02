@@ -130,7 +130,6 @@ func CheckBlacklist(ip string) (dnsblReturn){
 
   // We are finished!
   return resp
-
 }
 
 func getFlipIP(ip string) (string){
