@@ -61,6 +61,7 @@ type dnsblData struct {
 
 // dnsblReturn contains a list of all the checked lists and if its on any lists
 type dnsblReturn struct{
+  Err string
   Listed bool
   Count int
   Total int
@@ -104,9 +105,17 @@ func getDnsblResp(wg *sync.WaitGroup, resp *dnsblReturn, ip string, domain strin
 }
 
 func CheckBlacklist(ip string) (dnsblReturn){
+  var resp dnsblReturn
+
+  // Check to make sure that the IP is valid IPv4
+  valid, err := validateIP(ip)
+  if valid != true{
+    resp.Err = err
+    return resp
+  }
+
   var wg sync.WaitGroup
   wg.Add(len(blacklistDomains))
-  var resp dnsblReturn
 
   // Flip the IP
   flipIP := getFlipIP(ip)
@@ -137,4 +146,22 @@ func getFlipIP(ip string) (string){
   brokenIP := strings.Split(ip, ".")
   // Flips the IP to be in proper RFC format
   return fmt.Sprintf("%s.%s.%s.%s", brokenIP[3], brokenIP[2], brokenIP[1], brokenIP[0])
+}
+
+func validateIP(ip string) (bool, string){
+  // Parse the IP
+  testIP := net.ParseIP(ip)
+
+  // Make sure its a valid ipv4 or ipv6
+  if testIP == nil{
+    return false, "Not a valid IP"
+  }
+
+  // Make sure its version IPv4 Only
+  if testIP.To4() == nil{
+    return false, "Only IPv4 is currently supported right now"
+  }
+
+  // IP is good
+  return true, ""
 }
