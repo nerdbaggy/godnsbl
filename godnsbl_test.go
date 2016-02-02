@@ -7,7 +7,7 @@ import (
 
 func TestGetDnsblRespFunc(t *testing.T) {
   var wg sync.WaitGroup
-  var resp dnsblReturn
+  var resp DnsblReturn
   wg.Add(1)
   go getDnsblResp(&wg, &resp, getFlipIP("127.0.0.2"), "b.barracudacentral.org")
   wg.Wait()
@@ -46,8 +46,8 @@ func TestGetDnsblRespFunc(t *testing.T) {
 func TestCheckBlacklistFunc(t *testing.T) {
   resp := CheckBlacklist("127.0.0.2")
 
-  if len(resp.Responses) != len(blacklistDomains){
-    t.Errorf("Expected length of responses to be %d, got: %d", len(blacklistDomains), len(resp.Responses))
+  if len(resp.Responses) != len(BlacklistDomains){
+    t.Errorf("Expected length of responses to be %d, got: %d", len(BlacklistDomains), len(resp.Responses))
   }
 
   if resp.Listed != true{

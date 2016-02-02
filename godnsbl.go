@@ -9,7 +9,8 @@ import (
   "time"
 )
 
-var blacklistDomains = []string{
+// All the domains to check for a blacklist on
+var BlacklistDomains = []string{
   "b.barracudacentral.org",
   "bl.spamcop.net",
   "dnsrbl.org",
@@ -49,27 +50,27 @@ var blacklistDomains = []string{
   "srnblack.surgate.net",
 }
 
-// A dnsblData contains all the data about a particular dnsbl list
-type dnsblData struct {
-  Status string
-  Msg string
-  Listed bool
-  Name string
-  RespTime int64
-  Resp string
+// A DnsblData contains all the data about a particular dnsbl list
+type DnsblData struct {
+  Status string // If the check completed ok
+  Msg string // If there was an error what was the message
+  Listed bool // If the IP is listed in that particular dnsbl
+  Name string // domain of the dnsbl queried
+  RespTime int64 // How long in milliseconds it took for a reply
+  Resp string // The IP that the request responded with
 }
 
-// dnsblReturn contains a list of all the checked lists and if its on any lists
-type dnsblReturn struct{
-  Err string
-  Listed bool
-  Count int
-  Total int
-  Responses []dnsblData
+// DnsblReturn contains a list of all the checked lists and if its on any lists
+type DnsblReturn struct{
+  Err string // Will always be "" unless there is an error
+  Listed bool // If any of the dnsrbl lists contain this IP
+  Count int // How many have blacklisted this IP
+  Total int // How many total dnsrbl were checked
+  Responses []DnsblData // List of all the responses
 }
 
-
-func getDnsblResp(wg *sync.WaitGroup, resp *dnsblReturn, ip string, domain string) {
+// Gets the individual response from each dnsbl
+func getDnsblResp(wg *sync.WaitGroup, resp *DnsblReturn, ip string, domain string) {
   // Sweet timing function to see how long it takes to get a response
   st := time.Now()
 
@@ -98,14 +99,15 @@ func getDnsblResp(wg *sync.WaitGroup, resp *dnsblReturn, ip string, domain strin
   }
 
   // Could of used channels but this works for now
-  resp.Responses = append(resp.Responses, dnsblData{respStat, respErrMsg, listed, domain, et, respIPs})
+  resp.Responses = append(resp.Responses, DnsblData{respStat, respErrMsg, listed, domain, et, respIPs})
 
   // Bows
   wg.Done()
 }
 
-func CheckBlacklist(ip string) (dnsblReturn){
-  var resp dnsblReturn
+// CheckBlacklist takes the IP and returns the responses from the rbl servers
+func CheckBlacklist(ip string) (DnsblReturn){
+  var resp DnsblReturn
 
   // Check to make sure that the IP is valid IPv4
   valid, err := validateIP(ip)
@@ -115,13 +117,13 @@ func CheckBlacklist(ip string) (dnsblReturn){
   }
 
   var wg sync.WaitGroup
-  wg.Add(len(blacklistDomains))
+  wg.Add(len(BlacklistDomains))
 
   // Flip the IP
   flipIP := getFlipIP(ip)
 
   // Makes a go routine for every domain and does the check
-  for _, dom := range blacklistDomains {
+  for _, dom := range BlacklistDomains {
     go getDnsblResp(&wg, &resp, flipIP, dom)
   }
 
@@ -135,12 +137,13 @@ func CheckBlacklist(ip string) (dnsblReturn){
       resp.Count += 1
     }
   }
-  resp.Total = len(blacklistDomains)
+  resp.Total = len(BlacklistDomains)
 
   // We are finished!
   return resp
 }
 
+// getFlipIP flips the IP to be backwards per the RFC
 func getFlipIP(ip string) (string){
   // Splits the IP by the period
   brokenIP := strings.Split(ip, ".")
@@ -148,6 +151,8 @@ func getFlipIP(ip string) (string){
   return fmt.Sprintf("%s.%s.%s.%s", brokenIP[3], brokenIP[2], brokenIP[1], brokenIP[0])
 }
 
+// validateIP makes sure that IP is valid.
+// Right now it only allows IPv4
 func validateIP(ip string) (bool, string){
   // Parse the IP
   testIP := net.ParseIP(ip)
