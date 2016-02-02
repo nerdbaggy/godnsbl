@@ -46,9 +46,6 @@ func TestGetDnsblRespFunc(t *testing.T) {
 func TestCheckBlacklistFunc(t *testing.T) {
   resp := CheckBlacklist("127.0.0.2")
 
-  if len(resp.Responses) != len(BlacklistDomains){
-    t.Errorf("Expected length of responses to be %d, got: %d", len(BlacklistDomains), len(resp.Responses))
-  }
 
   if resp.Listed != true{
     t.Errorf("Expected blacklist to be true, got : %s", resp.Listed)
