@@ -2,11 +2,11 @@
 package godnsbl
 
 import (
-    "sync"
-    "strings"
-    "fmt"
-    "net"
-    "time"
+  "sync"
+  "strings"
+  "fmt"
+  "net"
+  "time"
 )
 
 var blacklistDomains = []string{
@@ -69,50 +69,47 @@ type dnsblReturn struct{
 
 
 func getDnsblResp(wg *sync.WaitGroup, resp *dnsblReturn, ip string, domain string) {
-    // Sweet timing function to see how long it takes to get a response
-    st := time.Now()
+  // Sweet timing function to see how long it takes to get a response
+  st := time.Now()
 
-    // Get the host for the format <reverse ip>.domain
-    ips, err := net.LookupIP(fmt.Sprintf("%s.%s", ip, domain))
+  // Get the host for the format <reverse ip>.domain
+  ips, err := net.LookupIP(fmt.Sprintf("%s.%s", ip, domain))
 
-    // See how long it took the request
-    et := time.Since(st).Nanoseconds()/1000000
+  // See how long it took the request
+  et := time.Since(st).Nanoseconds()/1000000
 
-    // Default values to insert
-    listed := false
-    respIPs := ""
-    respStat := "ok"
-    respErrMsg := ""
+  // Default values to insert
+  listed := false
+  respIPs := ""
+  respStat := "ok"
+  respErrMsg := ""
 
-    // If it gets an IP back, it is listed in the database. Only get the first IP per RFC
-    if len(ips) > 0 {
-      listed = true
-      respIPs = ips[0].String()
-    }
+  // If it gets an IP back, it is listed in the database. Only get the first IP per RFC
+  if len(ips) > 0 {
+    listed = true
+    respIPs = ips[0].String()
+  }
 
-    // Only show the error if it isn't the generic no domain when the listing isnt listed
-    if err != nil && err.Error() != fmt.Sprintf("lookup %s.%s: no such host", ip, domain){
-      respStat = "error"
-      respErrMsg = err.Error()
-    }
+  // Only show the error if it isn't the generic no domain when the listing isnt listed
+  if err != nil && err.Error() != fmt.Sprintf("lookup %s.%s: no such host", ip, domain) && err.Error() != fmt.Sprintf("lookup %s.%s: No address associated with hostname", ip, domain){
+    respStat = "error"
+    respErrMsg = err.Error()
+  }
 
-    // Could of used channels but this works for now
-    resp.Responses = append(resp.Responses, dnsblData{respStat, respErrMsg, listed, domain, et, respIPs})
+  // Could of used channels but this works for now
+  resp.Responses = append(resp.Responses, dnsblData{respStat, respErrMsg, listed, domain, et, respIPs})
 
-    // Bows
-    wg.Done()
+  // Bows
+  wg.Done()
 }
 
-// checkBlacklist does stuff
 func CheckBlacklist(ip string) (dnsblReturn){
   var wg sync.WaitGroup
   wg.Add(len(blacklistDomains))
   var resp dnsblReturn
 
-  // Splits the IP by the period
-  brokenIP := strings.Split(ip, ".")
-  // Flips the IP to be in proper RFC format
-  flipIP := fmt.Sprintf("%s.%s.%s.%s", brokenIP[3], brokenIP[2], brokenIP[1], brokenIP[0])
+  // Flip the IP
+  flipIP := getFlipIP(ip)
 
   // Makes a go routine for every domain and does the check
   for _, dom := range blacklistDomains {
@@ -134,4 +131,11 @@ func CheckBlacklist(ip string) (dnsblReturn){
   // We are finished!
   return resp
 
+}
+
+func getFlipIP(ip string) (string){
+  // Splits the IP by the period
+  brokenIP := strings.Split(ip, ".")
+  // Flips the IP to be in proper RFC format
+  return fmt.Sprintf("%s.%s.%s.%s", brokenIP[3], brokenIP[2], brokenIP[1], brokenIP[0])
 }
