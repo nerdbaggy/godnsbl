@@ -50,7 +50,7 @@ func TestCheckBlacklistFunc(t *testing.T) {
     t.Errorf("Expected length of responses to be %d, got: %d", len(blacklistDomains), len(resp.Responses))
   }
 
-  if len(resp.Listed) != true{
+  if resp.Listed != true{
     t.Errorf("Expected blacklist to be true, got : %s", resp.Listed)
   }
 
