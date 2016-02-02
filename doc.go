@@ -11,55 +11,6 @@ Gets the results and reports them in json
     jsonResponse, _ := json.Marshal(resp)
     fmt.Printf("%s", jsonResponse)
   }
-Output:
-{
-"Err": "",
-"Listed": true,
-"Count": 32,
-"Total": 37,
-"Responses": [{
-  "Status": "ok",
-  "Msg": "",
-  "Listed": true,
-  "Name": "bl.spamcop.net",
-  "RespTime": 56,
-  "Resp": "127.0.0.2"
-}, {
-  "Status": "ok",
-  "Msg": "",
-  "Listed": true,
-  "Name": "dnsrbl.org",
-  "RespTime": 55,
-  "Resp": "127.0.0.2"
-}, {
-  "Status": "ok",
-  "Msg": "",
-  "Listed": true,
-  "Name": "misc.dnsbl.sorbs.net",
-  "RespTime": 55,
-  "Resp": "127.0.0.4"
-}, {
-  "Status": "ok",
-  "Msg": "",
-  "Listed": true,
-  "Name": "smtp.dnsbl.sorbs.net",
-  "RespTime": 56,
-  "Resp": "127.0.0.5"
-}, {
-  "Status": "ok",
-  "Msg": "",
-  "Listed": true,
-  "Name": "escalations.dnsbl.sorbs.net",
-  "RespTime": 57,
-  "Resp": "127.0.0.6"
-}, {
-  "Status": "ok",
-  "Msg": "",
-  "Listed": true,
-  "Name": "dnsbl-2.uceprotect.net",
-  "RespTime": 57,
-  "Resp": "127.0.0.2"
-}]
-}
+Output: {"Err":"","Listed":true,"Count":32,"Total":37,"Responses":[{"Status":"ok","Msg":"","Listed":true,"Name":"bl.spamcop.net","RespTime":56,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"dnsrbl.org","RespTime":55,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"misc.dnsbl.sorbs.net","RespTime":55,"Resp":"127.0.0.4"},{"Status":"ok","Msg":"","Listed":true,"Name":"smtp.dnsbl.sorbs.net","RespTime":56,"Resp":"127.0.0.5"},{"Status":"ok","Msg":"","Listed":true,"Name":"escalations.dnsbl.sorbs.net","RespTime":57,"Resp":"127.0.0.6"},{"Status":"ok","Msg":"","Listed":true,"Name":"dnsbl-2.uceprotect.net","RespTime":57,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"web.dnsbl.sorbs.net","RespTime":61,"Resp":"127.0.0.7"},{"Status":"ok","Msg":"","Listed":true,"Name":"b.barracudacentral.org","RespTime":71,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"truncate.gbudb.net","RespTime":62,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"rbl.interserver.net","RespTime":73,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"all.s5h.net","RespTime":68,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"dnsbl.inps.de","RespTime":77,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"spam.spamrats.com","RespTime":89,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"recent.spam.dnsbl.sorbs.net","RespTime":95,"Resp":"127.0.0.6"},{"Status":"ok","Msg":"","Listed":true,"Name":"socks.dnsbl.sorbs.net","RespTime":100,"Resp":"127.0.0.3"},{"Status":"ok","Msg":"","Listed":true,"Name":"psbl.surriel.com","RespTime":105,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"bad.psky.me","RespTime":114,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":false,"Name":"spam.abuse.ch","RespTime":115,"Resp":""},{"Status":"ok","Msg":"","Listed":true,"Name":"dyna.spamrats.com","RespTime":118,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"dnsbl-1.uceprotect.net","RespTime":126,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"zombie.dnsbl.sorbs.net","RespTime":147,"Resp":"127.0.0.9"},{"Status":"ok","Msg":"","Listed":true,"Name":"tor.dan.me.uk","RespTime":150,"Resp":"127.0.0.100"},{"Status":"ok","Msg":"","Listed":true,"Name":"srnblack.surgate.net","RespTime":154,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"http.dnsbl.sorbs.net","RespTime":166,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"bl.spamcannibal.org","RespTime":166,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"rbl.megarbl.net","RespTime":166,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"spam.dnsbl.sorbs.net","RespTime":258,"Resp":"127.0.0.6"},{"Status":"ok","Msg":"","Listed":false,"Name":"crawler.rbl.webiron.net","RespTime":285,"Resp":""},{"Status":"ok","Msg":"","Listed":false,"Name":"cabl.rbl.webiron.net","RespTime":290,"Resp":""},{"Status":"ok","Msg":"","Listed":false,"Name":"stabl.rbl.webiron.net","RespTime":296,"Resp":""},{"Status":"ok","Msg":"","Listed":false,"Name":"babl.rbl.webiron.net","RespTime":323,"Resp":""},{"Status":"ok","Msg":"","Listed":true,"Name":"torexit.dan.me.uk","RespTime":339,"Resp":"127.0.0.100"},{"Status":"ok","Msg":"","Listed":true,"Name":"db.wpbl.info","RespTime":5081,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"bl.blocklist.de","RespTime":5096,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"ips.backscatterer.org","RespTime":5120,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"dnsbl-3.uceprotect.net","RespTime":5125,"Resp":"127.0.0.2"},{"Status":"ok","Msg":"","Listed":true,"Name":"cbl.abuseat.org","RespTime":5180,"Resp":"127.0.0.2"}]}
 */
 package godnsbl
