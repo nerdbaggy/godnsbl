@@ -134,7 +134,7 @@ func CheckBlacklist(ip string) (DnsblReturn){
   for _, check := range resp.Responses{
     if check.Listed == true{
       resp.Listed = true
-      resp.Count += 1
+      resp.Count ++
     }
   }
   resp.Total = len(BlacklistDomains)
