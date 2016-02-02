@@ -1,0 +1,10 @@
+language: go
+sudo: required
+dist: trusty
+
+go:
+  - 1.5
+  - tip
+  
+script:
+ - go test
